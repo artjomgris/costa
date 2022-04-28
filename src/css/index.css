@@ -1,0 +1,55 @@
+#vDiv {
+    display: table-cell;
+    width: 100vw;
+    height: 93vh;
+    padding: 10px;
+    vertical-align: middle;
+    text-align: center;
+}
+#vH {
+    text-align: center;
+    font-size: 170px;
+    background: -webkit-linear-gradient(270deg, black 59%, white 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.abs {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+#tH{
+    font-size: 70px;
+    margin-top: 70px;
+}
+
+form {
+    position: absolute;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 25vh;
+    width: fit-content;
+    color: white;
+}
+
+label{
+    font-size: 60px;
+}
+
+input {
+    width: 40%;
+    font-size:50px;
+    text-align: center;
+}
+
+body {
+    background: linear-gradient(180deg, white 50%, black 50%) fixed;
+}

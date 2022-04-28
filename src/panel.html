@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Darbības panelis</title>
+    <style>
+        #arright {
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+        }
+        #panel table, #workPage table, #editPage table, #adminTable {
+            width: 100%;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 20pt;
+        }
+
+        #editPage table, #editPage tr, #editPage td, #editPage th, #adminTable, #adminTable tr, #adminTable td, #adminTable th{
+            border: 1px solid black;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        #editPage table, #adminTable {
+            width: 80% !important;
+        }
+
+        input {
+            height: fit-content;
+            width: fit-content;
+            font-size: 20pt;
+        }
+        #btnExit, #btnBack {
+            font-size: large;
+            margin-top: 20px;
+            width: 100vw;
+            left: 0;
+            right: 0;
+            cursor: pointer;
+            background: #000;
+            color: #fff;
+            line-height: 42px;
+            padding: 0;
+            border: none;
+        }
+        #btnExit:hover, #btnBack:hover {
+            background: transparent;
+            color: #000;
+            box-shadow:
+                    -7px -7px 20px 0px #fff9,
+                    -4px -4px 5px 0px #fff9,
+                    7px 7px 20px 0px #0002,
+                    4px 4px 5px 0px #0001;
+        }
+        #btnExit:before,
+        #btnExit:after, #btnBack:before,
+        #btnBack:after{
+            content:'';
+            position:absolute;
+            top:0;
+            right:0;
+            height:2px;
+            width:0;
+            background: #000;
+            transition:400ms ease all;
+        }
+        #btnExit:after, #btnBack:after{
+            right:inherit;
+            top:inherit;
+            left:0;
+            bottom:0;
+        }
+        #btnExit:hover:before,
+        #btnExit:hover:after, #btnBack:hover:before,
+        #btnBack:hover:after{
+            width:100%;
+            transition:800ms ease all;
+        }
+        #panel td, #workPage td {
+            width: 25%;
+            text-align: center;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 27px;
+            cursor: pointer;
+            width: 370px;
+            height: 300px;
+        }
+        #reg table, #editing table {
+            width: 50%;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: right !important;
+            font-size: 20pt;
+        }
+        #reg, #workPage, #editPage, #editing, #adminPage, #admining{
+            display: none;
+        }
+
+        .btn-sm button{
+            width: 100%;
+            height: 40px;
+            font-size: 30px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body style="margin: 0; padding: 0;">
+<div style="text-align: center;">
+    <h1 id="heading">Darbības panelis</h1>
+    <h3>Prieks redzēt, {{.User.FName}} {{.User.LName}}!</h3>
+</div>
+<div id="panel">
+    <hr>
+        <table>
+            <tr>
+                <td><button id="register" class="btn" style="background-color: #4CAF50;">Preču reģistrēšana</button></td>
+                {{if .IfAdmin}}
+                <td><button id="admin" class="btn" style="background-color: #f44336;">Lietotāju administrēšana</button></td>
+                {{end}}
+                <td><button id="work" class="btn" style="background-color: #008CBA;">Darba vide</button></td>
+            </tr>
+        </table>
+</div>
+<div id="reg">
+    <table>
+        <tr>
+            <td>Nosaukums</td>
+            <td><input type="text" id="Name"></td>
+            <td rowspan="4"><button class="btn" id="SubmitReg" style="background: #4b54ff">Reģistrēt</button></td>
+        </tr>
+        <tr>
+            <td>Daudzums</td>
+            <td><input type="number" id="Quantity" min="1" max="100"></td>
+        </tr>
+        <tr>
+            <td>Atbraukšanas datums</td>
+            <td><input type="date" id="Date"></td>
+        </tr>
+        <tr>
+            <td>Derīgs līdz</td>
+            <td><input type="date" id="DateTo"></td>
+        </tr>
+    </table>
+</div>
+
+<div id="workPage">
+    <table>
+        <tr>
+            <td><button id="sell" class="btn" style="background-color: #4CAF50;">Pārdot preces</button></td>
+            <td><button id="edit" class="btn" style="background-color: #008CBA;">Rediģēt preces</button></td>
+        </tr>
+    </table>
+</div>
+
+<div id="editPage">
+    <table id="editTable">
+        <tr>
+            <th>Nosaukums</th>
+            <th>Atbraukšanas datums</th>
+            <th>Derīgs līdz</th>
+            <th>Daudzums</th>
+            <th>Izvēlēties</th>
+        </tr>
+    </table>
+</div>
+
+<div id="adminPage">
+    <table id="adminTable">
+        <tr>
+            <th>ID</th>
+            <th>Vards</th>
+            <th>Uzvards</th>
+            <th>Loma</th>
+            <th>Izvēlēties</th>
+        </tr>
+    </table>
+</div>
+
+<diV id="editing">
+    <table>
+        <tr>
+            <td>Nosaukums</td>
+            <td><input type="text" id="eName"></td>
+            <td rowspan="4"><button class="btn" id="eSubmitReg" style="background: #4b54ff">Saglabāt</button></td>
+            <td rowspan="4"><button class="btn" id="eSubmitDelete" style="background: #f44336">Dzēst produktu</button></td>
+        </tr>
+        <tr>
+            <td>Daudzums</td>
+            <td><input type="number" id="eQuantity" min="1" max="100"></td>
+        </tr>
+        <tr>
+            <td>Atbraukšanas datums</td>
+            <td><input type="date" id="eDate"></td>
+        </tr>
+        <tr>
+            <td>Derīgs līdz</td>
+            <td><input type="date" id="eDateTo"></td>
+        </tr>
+    </table>
+</diV>
+
+
+<button id="btnExit">Iziet no konta<i id="arright"></i></button>
+<button id="btnBack" style="display: none">Atpakaļ</button>
+<script src="src/js/panel.js"></script>
+</body>
+</html>

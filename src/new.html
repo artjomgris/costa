@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reģistrācija</title>
+    <style>
+        #arright {
+            border: solid black;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+        }
+        table {
+            width: 30%;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: right !important;
+            font-size: 20pt;
+        }
+        input {
+            height: fit-content;
+            width: fit-content;
+            font-size: 20pt;
+        }
+        #btnNext {
+            font-size: large;
+            margin-top: 20px;
+            width: 100vw;
+            left: 0;
+            right: 0;
+            cursor: pointer;
+            background: #000;
+            color: #fff;
+            line-height: 42px;
+            padding: 0;
+            border: none;
+        }
+        #btnNext:hover {
+            background: transparent;
+            color: #000;
+            box-shadow:
+                    -7px -7px 20px 0px #fff9,
+                    -4px -4px 5px 0px #fff9,
+                    7px 7px 20px 0px #0002,
+                    4px 4px 5px 0px #0001;
+        }
+        #btnNext:before,
+        #btnNext:after{
+            content:'';
+            position:absolute;
+            top:0;
+            right:0;
+            height:2px;
+            width:0;
+            background: #000;
+            transition:400ms ease all;
+        }
+        #btnNext:after{
+            right:inherit;
+            top:inherit;
+            left:0;
+            bottom:0;
+        }
+        #btnNext:hover:before,
+        #btnNext:hover:after{
+            width:100%;
+            transition:800ms ease all;
+        }
+
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body style="margin: 0; padding: 0;">
+<div style="text-align: center;">
+    <h1>Laipni lūdzam "SELLER'S HELPER" lietotnē</h1>
+    <h3>Lai turpinātu, lūdzu izveidot administrātora kontu:</h3>
+    <hr>
+    <table>
+        <tr>
+            <td>Vārds</td>
+            <td><input type="text" name="FName"></td>
+        </tr>
+        <tr>
+            <td>Uzvārds</td>
+            <td><input type="text" name="LName"></td>
+        </tr>
+        <tr>
+            <td>Parole</td>
+            <td><input type="password" name="Pass"></td>
+        </tr>
+    </table>
+    <button id="btnNext">Talāk<i id="arright"></i></button>
+</div>
+<script>
+    $(function(){
+        $("#btnNext").click(function() {
+            let FName = $("input[name=FName]").val();
+            let LName = $("input[name=LName]").val();
+            let Pass = $("input[name=Pass]").val();
+            if (FName === "" || LName === "" || Pass === "") {
+                alert("Lūdzu, aizpildiet visus laukus!")
+            } else {
+                $.post( "/user", {FName: FName, LName: LName, Pass: Pass, Role: "admin"})
+                    .done(function( data ) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Lietotājs ir reģistrēts ar id:',
+                            text: data,
+                            footer: 'PIERAKSTIET ŠŌ KODU, TAS JUMS OBLIGĀTI NOERĒS!'
+                        }).then((result) => {
+                            window.location.replace("/")
+                        })
+                    });
+            }
+        });
+    });
+</script>
+</body>
+</html>

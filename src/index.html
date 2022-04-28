@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Helper</title>
+    <link rel="stylesheet" href="/src/css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1 id="tH" class="abs">SELLER'S HELPER</h1>
+    <div id="vDiv">
+        <h1 id="vH">Autorizācija</h1>
+    </div>
+    <form>
+        <label for="sNum">Pārdēvēja kods:</label><br>
+        <input type="text" id="sNum" name="seller" value="AA1234"><br>
+    </form>
+    <script>
+        $(function(){
+            $("form").submit(function(e){
+                e.preventDefault();
+                $.post( "/", {seller: $("#sNum").val()})
+                    .done(function( data ) {
+                        Swal.fire({
+                            title: 'Ievadiet paroli:',
+                            input: 'password',
+                            inputLabel: 'parole',
+                            inputPlaceholder: 'Ievadiet paroli',
+                            inputAttributes: {
+                                autocapitalize: 'off',
+                                autocorrect: 'off'
+                            }
+                        }).then((result) => {
+                            if (result.value) {
+                                $.post( "/checkpass", {Id: $("#sNum").val(), Pass: result.value, Hash: data})
+                                .done(function (url) {
+                                    window.location.replace(url)
+                                })
+                                .fail(function (jqXHR){
+                                    if (jqXHR.status === 403) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Ups...',
+                                            text: "Nepareiza parole!",
+                                        })
+                                    }
+                                })
+                            } else {
+                                Swal.fire("Ievadiet paroli!");
+                            }
+                        })
+                    })
+                    .fail(function(jqXHR) {
+                        if (jqXHR.status === 403) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Ups...',
+                                text: "Mums nesanāca atrast šo lietotāju, lūdzu pamēģiniet vēlreiz!",
+                            })
+                        }
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
